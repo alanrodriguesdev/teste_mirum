@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "ListaCargo";
+}
+
+<link href="~/Content/custom_css.css" rel="stylesheet" />
+<div class="col-xl-12 col-lg-7">
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <h4><strong>Lista de Pessoas</strong></h4>
+            <div class="my_input">
+                @Html.Label("Cód Cargo")
+                @Html.TextBox("Cod_Cargo", null, new { @type = "text", @maxLength = "15" })
+                <input type="button" id="btPesquisar" value="Pesquisar" class="btn btn-primary btn-xs" />
+                <input type="button" id="btlimparFilter" value="Cancelar" class="btn btn-danger btn-xs" />
+            </div>
+
+            <br />
+            <div id="lstCargoHome"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function () {
+
+    Init();
+    $('#btPesquisar').on('click', function () {
+        BuscarPessoaFilter();
+    });
+    $('#btlimparFilter').on('click', function () {
+        LimparFilter();
+    });
+});
+
+function Init() {
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("_ListaCargo","Cargo")',
+        dataType: 'html',
+        success: function (result) {
+            $('#lstCargoHome').html('');
+            $('#lstCargoHome').append(result);
+        },
+        error: function (error) {
+             Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Ocorreu um erro ao buscar cargo!',
+            })
+            console.log(error);
+        }
+    });
+    };
+
+    function BuscarPessoaFilter() {
+        debugger;
+        var filter = { Cod_Cargo: $('#Cod_Cargo').val(),isBotaoPesquisar: 1 };
+        $.ajax({
+        type: "POST",
+        url: '@Url.Action("_ListaCargo","Cargo")',
+            dataType: 'html',
+        data:filter,
+        success: function (result) {
+            $('#lstCargoHome').html('');
+            $('#lstCargoHome').append(result);
+        },
+            error: function (error) {
+            Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Ocorreu um erro ao buscar cargo! Um Cód.Cargo é esperado.',
+            })
+            console.log(error);
+        }
+    });
+    };
+
+    function LimparFilter() {
+        window.location = window.location.href;
+    }
+
+
+</script>
+
+
+

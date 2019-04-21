@@ -12,5 +12,6 @@ namespace TesteMirum.Domain.Repositories
         void EditarPessoa(Pessoa editarPessoa);
         int GetQuantPessoasByCargoId(int cargoId);
         void ExcluirPessoaByCargoId(int cargoId);
+        IEnumerable<PessoaLista> GetByFilter(int? Cod_Pessoa);
     }
 }

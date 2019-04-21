@@ -13,5 +13,6 @@ namespace TesteMirum.Domain.Interfaces
         void AddCargo(Cargo cargo);
         void EditarCargo(Cargo editarCargo);
         void Excluir(int id);
+        IEnumerable<CargoLista> GetByFilter(int? codCargo);
     }
 }

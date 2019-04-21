@@ -38,5 +38,20 @@ namespace TesteMirum.Application.Services
         {
             _cargoService.Excluir(id);
         }
+
+        public IEnumerable<CargoListaViewModel> GetByFilter(string Cod_Cargo)
+        {
+            int? codCargo = null;
+            if (!String.IsNullOrEmpty(Cod_Cargo))
+            {
+                var isNumeric = int.TryParse(Cod_Cargo, out int n);
+
+                if (isNumeric)
+                    codCargo = Convert.ToInt32(Cod_Cargo);
+                else
+                    codCargo = null;
+            }
+            return Mapper.Map<IEnumerable<CargoLista>, IEnumerable<CargoListaViewModel>>(_cargoService.GetByFilter(codCargo));
+        }
     }
 }

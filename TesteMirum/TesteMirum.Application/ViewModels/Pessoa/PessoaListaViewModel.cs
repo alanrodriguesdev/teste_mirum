@@ -14,5 +14,6 @@ namespace TesteMirum.Application.ViewModels.Pessoa
         public string Email { get; set; }
         public int Cargo_Id { get; set; }
         public string Cargo { get; set; }
+        public decimal Salario_Base { get; set; }
     }
 }

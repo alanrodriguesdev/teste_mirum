@@ -10,6 +10,7 @@ namespace TesteMirum.Application.Interfaces
     public interface ICargoApplicationService
     {
         IEnumerable<CargoViewModel> GetAll();
+        IEnumerable<CargoListaViewModel> GetByFilter(string Cod_Cargo = null);
         void AddCargo(CargoViewModel cargoView);
         void EditarCargo(CargoViewModel editarCargo);
         void Excluir(int id);

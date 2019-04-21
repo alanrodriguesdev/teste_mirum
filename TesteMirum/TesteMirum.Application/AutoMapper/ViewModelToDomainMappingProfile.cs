@@ -12,6 +12,7 @@ namespace TesteMirum.Application.AutoMapper
             CreateMap<PessoaViewModel, Pessoa>();
             CreateMap<CargoViewModel, Cargo>();
             CreateMap<PessoaListaViewModel, PessoaLista>();
+            CreateMap<CargoListaViewModel, CargoLista>();
         }
     }
 }

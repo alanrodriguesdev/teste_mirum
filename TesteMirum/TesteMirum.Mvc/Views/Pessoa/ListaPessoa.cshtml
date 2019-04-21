@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "ListaPessoa";
+}
+
+
+<link href="~/Content/custom_css.css" rel="stylesheet" />
+<div class="col-xl-12 col-lg-7">
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <h4><strong>Lista de Pessoas</strong></h4>
+            <div class="my_input">
+                @Html.Label("Cód Pessoa")
+                @Html.TextBox("Cod_Pessoa", null, new { @type = "text", @maxLength = "15" })
+                <input type="button" id="btPesquisar" value="Pesquisar" class="btn btn-primary btn-xs" />
+                <input type="button" id="btlimparFilter" value="Cancelar" class="btn btn-danger btn-xs" />
+            </div>
+
+            <br />
+            <div id="lstPessoasHome"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function () {
+
+    Init();
+    $('#btPesquisar').on('click', function () {
+        BuscarPessoaFilter();
+    });
+    $('#btlimparFilter').on('click', function () {
+        LimparFilter();
+    });
+});
+
+function Init() {
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("_ListaPessoa","Pessoa")',
+        dataType: 'html',
+        success: function (result) {
+            $('#lstPessoasHome').html('');
+            $('#lstPessoasHome').append(result);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+    };
+
+    function BuscarPessoaFilter() {
+        debugger;
+        var filter = { Cod_Pessoa: $('#Cod_Pessoa').val(),isBotaoPesquisar: 1 };
+        $.ajax({
+        type: "POST",
+        url: '@Url.Action("_ListaPessoa","Pessoa")',
+            dataType: 'html',
+        data:filter,
+        success: function (result) {
+            $('#lstPessoasHome').html('');
+            $('#lstPessoasHome').append(result);
+        },
+            error: function (error) {
+            Swal.fire({
+              type: 'error',
+              title: 'Oops...',
+              text: 'Ocorreu um erro ao buscar pessoa!  Um Cód.Pessoa é esperado.',
+            })
+            console.log(error);
+        }
+    });
+    };
+
+    function LimparFilter() {
+        window.location = window.location.href;
+    }
+    
+
+</script>
+

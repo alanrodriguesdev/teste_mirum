@@ -59,5 +59,13 @@ namespace TesteMirum.Data.Infra.Repositories
             };
         }
 
+        public IEnumerable<PessoaLista> GetByFilter(int? Cod_Pessoa)
+        {
+            using (var conn = ConnectionFactory.TesteMirumDataBaseOpen())
+            {
+
+                return conn.Query<PessoaLista>(selectByFilter, new { Cod_Pessoa }).AsEnumerable();
+            };
+        }
     }
 }

@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-        <a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand mr-1" href='@Url.Action("Index","Home")'>Teste Mirum</a>
 
         <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
@@ -26,7 +26,7 @@
         <!-- Sidebar -->
         <ul class="sidebar navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href='@Url.Action("Index","Home")'>
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -37,8 +37,11 @@
                     <span>Pessoas</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="pessoaDropdown">
-                    @Html.ActionLink("Cadastro", "Index", "Pessoa",null,new { @class = "dropdown-item" })
+                    @Html.ActionLink("Gerenciar", "Index", "Pessoa", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Listar", "ListaPessoa", "Pessoa", null, new { @class = "dropdown-item" })
+
                 </div>
+                
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="cargoDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,8 +49,9 @@
                     <span>Cargos</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="cargoDropdown">
-                    @Html.ActionLink("Cadastro", "Index", "Cargo", null, new { @class = "dropdown-item" })
-                    
+                    @Html.ActionLink("Gerenciar", "Index", "Cargo", null, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Listar", "ListaCargo", "Cargo", null, new { @class = "dropdown-item" })
+
                 </div>
             </li>
             
@@ -64,13 +68,7 @@
             </footer>
 
         </div>
-
-
     </div>
-
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)

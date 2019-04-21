@@ -11,11 +11,25 @@
                 ,p.Email   
                 ,p.Cargo_Id
                 ,c.Cargo
+                ,c.Salario_Base
             FROM Pessoa p
             INNER JOIN Cargo c ON p.Cargo_Id = c.Id
         ";
         private const string selectQuantPessoaByCargoId = @"
             SELECT Id FROM Pessoa WHERE Cargo_Id = @cargoId
+        ";
+        private const string selectByFilter = @"
+             SELECT 
+                p.Id
+                ,p.Nome
+                ,p.Rg
+                ,p.Email   
+                ,p.Cargo_Id
+                ,c.Cargo
+                ,c.Salario_Base
+            FROM Pessoa p
+            INNER JOIN Cargo c ON p.Cargo_Id = c.Id
+            WHERE (p.Id = @Cod_Pessoa)
         ";
         #endregion
         #region INSERT's

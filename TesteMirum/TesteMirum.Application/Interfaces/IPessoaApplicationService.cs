@@ -7,6 +7,7 @@ namespace TesteMirum.Application.Interfaces
     {
         void AddPessoa(PessoaViewModel pessoaView);
         IEnumerable<PessoaListaViewModel> GetAll();
+        IEnumerable<PessoaListaViewModel> GetByFilter(string Cod_Pessoa);
         void Excluir(int id);
         void ExcluirPessoaByCargoId(int cargoId);
         void EditarPessoa(PessoaViewModel editarPessoa);

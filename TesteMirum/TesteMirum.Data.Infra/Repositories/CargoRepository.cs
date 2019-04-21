@@ -42,5 +42,18 @@ namespace TesteMirum.Data.Infra.Repositories
             };
         }
 
+        public IEnumerable<CargoLista> GetByFilter(int? codCargo)
+        {
+            using (var conn = ConnectionFactory.TesteMirumDataBaseOpen())
+            {
+                var query = selectByFilter;
+
+                if (codCargo != null)
+                    query = query.Replace("@parm", "AND (c.Id = @codCargo)");
+
+                query = query.Replace("@parm", "");
+                return conn.Query<CargoLista>(query,new { codCargo }).AsEnumerable();
+            };
+        }
     }
 }

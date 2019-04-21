@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace TesteMirum.Domain.Model
 {
-    public class PessoaLista
+    public class CargoLista
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Rg { get; set; }
-        public string Email { get; set; }
-        public int Cargo_Id { get; set; }
-        public string Cargo { get; set; }
+        public string Cargo_Nome { get; set; }
         public decimal Salario_Base { get; set; }
+        public string Pessoa_Nome { get; set; }
     }
 }

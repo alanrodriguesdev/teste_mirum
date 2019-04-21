@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CargoApplicationService.cs" />
     <Compile Include="Services\PessoaApplicationService.cs" />
+    <Compile Include="ViewModels\Cargo\CargoListaViewModel.cs" />
     <Compile Include="ViewModels\Cargo\CargoViewModel.cs" />
     <Compile Include="ViewModels\Pessoa\PessoaListaViewModel.cs" />
     <Compile Include="ViewModels\Pessoa\PessoaViewModel.cs" />

@@ -16,6 +16,17 @@ namespace TesteMirum.Data.Infra.Repositories
                 ,Salario_Base
             FROM Cargo
         ";
+        private const string selectByFilter = @"
+            SELECT 
+                c.Id
+                ,c.Cargo Cargo_Nome
+                ,c.Salario_Base
+                ,p.Nome Pessoa_Nome
+            FROM Cargo c
+            INNER JOIN Pessoa p ON c.Id = p.Cargo_Id
+            WHERE 1=1
+                @parm
+        ";
         #endregion
         #region INSERT's
         private const string insertCargo = @"

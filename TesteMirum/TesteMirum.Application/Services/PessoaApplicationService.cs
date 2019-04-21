@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using TesteMirum.Application.Interfaces;
 using TesteMirum.Application.ViewModels.Pessoa;
@@ -20,8 +21,6 @@ namespace TesteMirum.Application.Services
         {
             _pessoaService.AddPessoa(Mapper.Map<PessoaViewModel,Pessoa>(pessoaView));          
         }
-
-
         public IEnumerable<PessoaListaViewModel> GetAll()
         {
             return Mapper.Map<IEnumerable<PessoaLista>, IEnumerable<PessoaListaViewModel>>(_pessoaService.GetAll());
@@ -44,6 +43,21 @@ namespace TesteMirum.Application.Services
         public void ExcluirPessoaByCargoId(int cargoId)
         {
             _pessoaService.ExcluirPessoaByCargoId(cargoId);
+        }
+
+        public IEnumerable<PessoaListaViewModel> GetByFilter(string Cod_Pessoa)
+        {
+            int? codPessoa =null;
+            if (!String.IsNullOrEmpty(Cod_Pessoa))
+            {
+                var isNumeric = int.TryParse(Cod_Pessoa, out int n);
+
+                if (isNumeric)
+                    codPessoa = Convert.ToInt32(Cod_Pessoa);
+                else
+                    codPessoa = null;                
+            }
+            return Mapper.Map<IEnumerable<PessoaLista>, IEnumerable<PessoaListaViewModel>>(_pessoaService.GetByFilter(codPessoa));
         }
     }
 }

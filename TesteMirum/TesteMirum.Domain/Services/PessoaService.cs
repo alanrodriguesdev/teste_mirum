@@ -41,5 +41,10 @@ namespace TesteMirum.Domain.Services
         {
            _pessoaRepository.ExcluirPessoaByCargoId(cargoId);
         }
+
+        public IEnumerable<PessoaLista> GetByFilter(int? Cod_Pessoa)
+        {
+            return _pessoaRepository.GetByFilter(Cod_Pessoa);
+        }
     }
 }

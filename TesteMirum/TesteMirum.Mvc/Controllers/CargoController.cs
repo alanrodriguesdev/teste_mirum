@@ -41,6 +41,29 @@ namespace TesteMirum.Mvc.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult ListaCargo()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult _ListaCargo(string Cod_Cargo, int isBotaoPesquisar = 0)
+        {
+            try
+            {
+                if (isBotaoPesquisar == 1 && String.IsNullOrEmpty(Cod_Cargo))
+                    throw new Exception();
+
+                if (String.IsNullOrEmpty(Cod_Cargo))
+                    return PartialView(_cargoApplicationService.GetByFilter());
+
+                return PartialView(_cargoApplicationService.GetByFilter(Cod_Cargo));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
         public ActionResult _Lista()
         {
             return PartialView(_cargoApplicationService.GetAll());

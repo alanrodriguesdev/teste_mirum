@@ -33,5 +33,10 @@ namespace TesteMirum.Domain.Services
         {
             _cargoRepository.Excluir(id);
         }
+
+        public IEnumerable<CargoLista> GetByFilter(int? codCargo)
+        {
+            return _cargoRepository.GetByFilter(codCargo);
+        }
     }
 }

@@ -1,0 +1,127 @@
+﻿@model TesteMirum.Application.ViewModels.Cargo.CargoViewModel
+
+@{
+    ViewBag.Title = "Cargo";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<div class="col-xl-8 col-lg-7">
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <br />
+            @using (Html.BeginForm("Criar", "Cargo", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("editarId")
+
+                <div class="form-horizontal">
+                    <h4>Cadastro</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Cargo_Nome, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Cargo_Nome, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Salário Base", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Salario_Base, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Salario_Base, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div id="divCriar" class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Criar" class="btn btn-primary btn-xs" />
+                            <input type="button" id="btCancelarCriar" value="Cancelar" class="btn btn-danger btn-xs" />
+                        </div>
+                    </div>
+                    <div id="divEditar" class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" id="btEditar" value="Editar" class="btn btn-primary btn-xs" />
+                            <input type="button" id="btCancelarEditar" value="Cancelar" class="btn btn-danger btn-xs" />
+                        </div>
+                    </div>
+                </div>
+            }
+            <br />
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col-xl-12 col-lg-7">
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div id="partialLstCargo"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        GridCargo();
+        $('#divEditar').hide();
+        $('#btEditar').on('click', EditarCargo);
+        $('#btCancelarCriar').on('click', CancelarAcoes);
+        $('#btCancelarEditar').on('click', CancelarAcoes);
+    });
+
+     function CancelarAcoes() {
+        window.location.reload(true);
+    }
+    function EditarCargo() {
+        var cargoEditar = {
+            Id: $('#editarId').val()
+            , Cargo_Nome: $('#Cargo_Nome').val()
+            , Salario_Base: $('#Salario_Base').val()
+
+        };
+         $.ajax({
+            type: "POST",
+             url: '@Url.Action("Editar","Cargo")',
+            dataType: 'html',
+             data: cargoEditar,
+             success: function (result) {
+                 $('#partialLstCargo').html('');
+                 $('#partialLstCargo').append(result);
+                 $('#divEditar').hide();
+                 $('#divCriar').show();
+                 LimparCampos();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    function LimparCampos() {
+        $('#editarId').val('');
+        $('#Cargo_Nome').val('');
+        $('#Salario_Base').val('');
+    }
+    function GridCargo(){
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("_Lista","Cargo")',
+            dataType: "html",
+                success: function (result) {
+                $('#partialLstCargo').append(result);
+            },
+            error: function (error) {
+                debugger;
+                console.log(error);
+            }
+        });
+    }
+</script>

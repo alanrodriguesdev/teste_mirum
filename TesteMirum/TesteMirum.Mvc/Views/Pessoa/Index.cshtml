@@ -1,0 +1,150 @@
+﻿@model TesteMirum.Application.ViewModels.Pessoa.PessoaViewModel
+
+@{
+    ViewBag.Title = "Pessoa";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<link href="~/Content/custom_css.css" rel="stylesheet"/>
+<div class="col-xl-10 col-lg-7">
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            @using (Html.BeginForm("Criar", "Pessoa", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("editarId")
+
+
+                <div class="form-horizontal">
+                    <h4>Cadastro</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                     
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Rg, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Rg, new { htmlAttributes = new { @class = "form-control rg_width", @maxLength="15" } })
+                            @Html.ValidationMessageFor(model => model.Rg, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("Cargo_Id", ViewBag.ListaCargos as SelectList)
+                        </div>
+                    </div>
+
+                    <div id="divCriar" class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Criar" class="btn btn-primary btn-xs" />
+                            <input type="button" id="btCancelarCriar" value="Cancelar" class="btn btn-danger btn-xs" />
+                        </div>
+                    </div>
+                    <div id="divEditar" class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" id="btEditar" value="Editar" class="btn btn-primary btn-xs" />
+                            <input type="button" id="btCancelarEditar" value="Cancelar" class="btn btn-danger btn-xs" />
+                        </div>
+                    </div>
+
+                </div>
+            }
+            <br />
+
+
+        </div>
+    </div>
+</div>
+<div class="col-xl-12 col-lg-7">
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div id="partialLstPessoa"></div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        GridPessoa();
+        $('#divEditar').hide();
+        $('#btEditar').on('click', EditarPessoa);
+        $('#btCancelarCriar').on('click', CancelarAcoes);
+        $('#btCancelarEditar').on('click', CancelarAcoes);
+    });
+
+    function EditarPessoa() {
+        var pessoaEditar = {
+            Id: $('#editarId').val()
+            , Nome: $('#Nome').val()
+            , Rg: $('#Rg').val()
+            , Email: $('#Email').val()
+            , Cargo_Id: $('#Cargo_Id').val()
+        };
+         $.ajax({
+            type: "POST",
+             url: '@Url.Action("Editar","Pessoa")',
+            dataType: 'html',
+             data: pessoaEditar,
+             success: function (result) {
+                 $('#partialLstPessoa').html('');
+                 $('#partialLstPessoa').append(result);
+                 $('#divEditar').hide();
+                 $('#divCriar').show();
+                 LimparCampos();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function CancelarAcoes() {
+        window.location.reload(true);
+    }
+
+    function LimparCampos() {
+        $('#editarId').val('');
+        $('#Nome').val('');
+        $('#Rg').val('');
+        $('#Email').val('');
+        $('#Cargo_Id').val(1)
+    }
+
+    function GridPessoa(){
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("_Lista","Pessoa")',
+            dataType: "html",
+                success: function (result) {
+                $('#partialLstPessoa').append(result);
+            },
+            error: function (error) {
+                debugger;
+                console.log(error);
+            }
+        });
+    }
+</script>

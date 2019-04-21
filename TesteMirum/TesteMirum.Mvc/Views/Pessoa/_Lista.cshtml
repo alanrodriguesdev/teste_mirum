@@ -1,0 +1,126 @@
+﻿@model List<TesteMirum.Application.ViewModels.Pessoa.PessoaListaViewModel>
+
+<table id="mytable" class="table table-bordred table-striped">
+
+    <thead>
+        <tr>
+            <th>Cód. Pessoa</th>
+            <th>Nome</th>
+            <th>Rg</th>
+            <th>Email</th>
+            <th>Cargo</th>
+            <th>Editar</th>
+            <th>Excluir</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+                <td>@item.Nome</td>
+                <td>@item.Rg</td>
+                <td>@item.Email</td>
+                <td>@item.Cargo</td>
+                <td><p data-placement="top" data-toggle="tooltip" title="Editar">
+                    <button id="bt_editar" onclick="EditarPessoa(@item.Id,'@item.Nome','@item.Rg','@item.Email',@item.Cargo_Id)" class="btn btn-primary btn-xs" data-title="Editar">
+                    <span> Editar</span>
+                        </button>
+                    </p>
+                </td>
+                <td><p data-placement="top" data-toggle="tooltip" title="Excluir">
+                    <button id="bt_excluir" onclick="ConfirmaExclusao(@item.Id)" class="btn btn-danger btn-xs" data-title="excluir">
+                    <span> Excluir</span>
+                        </button>
+                    </p>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+<script>
+    $(document).ready(function () {
+        $('#mytable').DataTable({
+                        "language": {
+                        "sProcessing":    "Procesando...",
+                        "sLengthMenu":    "Mostrar _MENU_ registros",
+                        "sZeroRecords":   "Não foi encontrado resultados",
+                        "sEmptyTable":    "Ningún dato disponible en esta tabla",
+                        "sInfo":          "Mostrando registros de _START_ até _END_ de um total de _TOTAL_ registros",
+                        "sInfoEmpty":     "Mostrando registros de 0 até 0 de um total de 0 registros",
+                        "sInfoFiltered":  "(filtrado de um total de _MAX_ registros)",
+                        "sInfoPostFix":   "",
+                        "sSearch":        "Buscar:",
+                        "sUrl":           "",
+                        "sInfoThousands":  ",",
+                        "sLoadingRecords": "Carregando...",
+                        "oPaginate": {
+                            "sFirst":    "Primero",
+                            "sLast":    "Último",
+                            "sNext":    "Próximo",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                }
+        });
+
+    });
+
+
+    function EditarPessoa(id,nome,rg,email,cargo) {
+        $('#Nome').val(nome);
+        $('#Rg').val(rg);
+        $('#Email').val(email);
+        $('#Cargo_Id').val(cargo)
+        $('#divCriar').hide();
+        $('#divEditar').show();
+        $('#editarId').val(id);
+        $(window).scrollTop(0);
+
+    }
+
+
+    function ConfirmaExclusao(data) {
+
+        Swal.fire({
+            title: 'Atenção',
+            text: "Tem certeza que deseja excluir o registro?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não'
+        }).then(function (result) {
+            if (result.value) {
+                ExcluirPessoa(data);
+            }
+        })
+    }
+    function ExcluirPessoa(data) {
+        debugger;
+        var id = { id : data };
+         $.ajax({
+            type: "POST",
+             url: '@Url.Action("Excluir","Pessoa")',
+            dataType: 'html',
+             data: id,
+             success: function (result) {
+                 $('#partialLstPessoa').html('');
+                $('#partialLstPessoa').append(result);
+                 $(window).scrollTop(0);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
